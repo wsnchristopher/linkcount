@@ -7,7 +7,6 @@ enum CountQueryMode {
 }
 
 class CountQuery {
-	public const SINGLE_NS = 1;
 	public const NO_FROM_NS = 2;
 	public const NO_LINK_TARGET = 4;
 
@@ -31,7 +30,6 @@ class CountQuery {
 	) {
 		$hasFromNS = ~$flags & CountQuery::NO_FROM_NS;
 		$usesLinkTarget = ~$flags & CountQuery::NO_LINK_TARGET;
-		$hasNS = $usesLinkTarget || (~$flags & CountQuery::SINGLE_NS);
 
 		if ($this->fromNamespaces !== '') {
 			if  ($hasFromNS) {
@@ -49,13 +47,9 @@ class CountQuery {
 		}
 
 		$linkInfoPrefix = $usesLinkTarget ? 'lt' : $prefix;
-		$titleColumn = $linkInfoPrefix . '_' . ($hasNS ? 'title' : 'to');
 
-		array_push($wheres, "$titleColumn = $titleSQL");
-
-		if ($hasNS) {
-			array_push($wheres, "{$linkInfoPrefix}_namespace = $namespaceSQL");
-		}
+		array_push($wheres, "{$linkInfoPrefix}_title = $titleSQL");
+		array_push($wheres, "{$linkInfoPrefix}_namespace = $namespaceSQL");
 
 		if ($usesLinkTarget) {
 			array_push($joins, "JOIN linktarget ON {$prefix}_target_id = lt_id");
