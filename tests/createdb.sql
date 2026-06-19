@@ -59,11 +59,10 @@ CREATE TABLE categorylinks (
 	cl_target_id bigint(20) unsigned DEFAULT 0
 );
 
--- No link target yet
 CREATE TABLE imagelinks (
 	il_from int(10) unsigned NOT NULL DEFAULT 0,
-	il_to varbinary(255) NOT NULL DEFAULT '',
-	il_from_namespace int(11) NOT NULL DEFAULT 0
+	il_from_namespace int(11) NOT NULL DEFAULT 0,
+	il_target_id bigint(20) unsigned DEFAULT 0
 );
 
 CREATE TABLE page (

@@ -26,7 +26,7 @@ class LinkCountTest extends TestCase {
 			'pagelink' => self::$db->prepare('INSERT INTO pagelinks (pl_from, pl_from_namespace, pl_target_id) VALUES (?, ?, ?)'),
 			'templatelink' => self::$db->prepare('INSERT INTO templatelinks (tl_from, tl_from_namespace, tl_target_id) VALUES (?, ?, ?)'),
 			'categorylink' => self::$db->prepare('INSERT INTO categorylinks (cl_from, cl_target_id) VALUES (?, ?)'),
-			'imagelink' => self::$db->prepare('INSERT INTO imagelinks (il_from, il_to, il_from_namespace) VALUES (?, ?, ?)'), // No link target yet
+			'imagelink' => self::$db->prepare('INSERT INTO imagelinks (il_from, il_from_namespace, il_target_id) VALUES (?, ?, ?)'),
 			'linktarget' => self::$db->prepare('INSERT INTO linktarget (lt_id, lt_namespace, lt_title) VALUES (?, ?, ?)')
 		];
 
@@ -103,7 +103,8 @@ class LinkCountTest extends TestCase {
 
 	private function addImageLink($fromNS, $fromTitle, $toTitle) {
 		$fromID = $this->ensurePage($fromNS, $fromTitle);
-		self::$statements['imagelink']->execute([$fromID, $toTitle, $fromNS]);
+		$targetID = $this->ensureTarget(6, $toTitle);
+		self::$statements['imagelink']->execute([$fromID, $fromNS, $targetID]);
 	}
 
 	private function compareCounts($page, $expected, $namespaces = '') {
