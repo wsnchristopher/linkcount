@@ -32,7 +32,7 @@ class CountQuery {
 		$usesLinkTarget = ~$flags & CountQuery::NO_LINK_TARGET;
 
 		if ($this->fromNamespaces !== '') {
-			if  ($hasFromNS) {
+			if ($hasFromNS) {
 				array_push($wheres, "{$prefix}_from_namespace IN ({$this->fromNamespaces})");
 			} else {
 				array_push(
